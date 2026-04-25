@@ -141,9 +141,15 @@ body{
   opacity:0;transition:opacity .4s;
 }
 #arena-hint{
-  position:fixed;bottom:calc(var(--sab) + 16px);left:0;right:0;
-  text-align:center;font-size:12px;font-weight:700;opacity:.4;
-  pointer-events:none;z-index:5;transition:opacity .5s;
+  position:fixed;bottom:calc(var(--sab) + 22px);left:0;right:0;
+  text-align:center;pointer-events:none;z-index:15;transition:opacity .7s;
+  display:flex;justify-content:center;
+}
+#arena-hint span{
+  background:var(--dark);color:#fff;font-size:13px;font-weight:700;
+  padding:9px 20px;border-radius:99px;
+  box-shadow:0 4px 16px rgba(0,0,0,.35);
+  letter-spacing:.02em;
 }
 
 /* ====== PROBLEM ITEMS ====== */
@@ -210,6 +216,11 @@ body{
 .divider::before,.divider::after{content:'';flex:1;height:1px;background:#ddd}
 
 .deco{position:fixed;background:var(--yellow-lt);border:1.5px solid #E0D800;padding:7px 11px;font-size:10px;font-weight:700;border-radius:3px;opacity:.4;pointer-events:none;z-index:0;box-shadow:2px 2px 0 rgba(0,0,0,.07)}
+
+/* ====== REVEAL ANIMATION (post-game) ====== */
+.reveal-card{opacity:0;transform:translateY(22px);transition:opacity .55s ease,transform .55s cubic-bezier(.25,.46,.45,.94)}
+.reveal-card.visible{opacity:1;transform:translateY(0)}
+.qr-img{width:100%;max-width:240px;border-radius:12px;border:2px solid #E0DDD6;display:block;margin:0 auto}
 </style>
 </head>
 <body>
@@ -233,33 +244,6 @@ body{
     <div style="display:inline-flex;align-items:center;gap:6px;background:var(--orange);color:#fff;border:2px solid rgba(255,255,255,.25);border-radius:99px;padding:5px 14px;font-size:12px;font-weight:800;margin-top:14px;box-shadow:0 3px 10px rgba(0,0,0,.3)">
       &#10022; ReShuffle &nbsp;&middot;&nbsp; 2nd May 2026
     </div>
-  </div>
-
-  <!-- What is this -->
-  <div class="card" style="background:var(--yellow)">
-    <div class="label" style="margin-bottom:8px">What&#39;s this about?</div>
-    <div style="font-size:16px;font-weight:800;line-height:1.4;margin-bottom:8px">
-      Your city has real problems.<br>
-      Most people just live with them.
-    </div>
-    <div class="body-md" style="color:var(--dark)">
-      <strong>ReShuffle</strong> is a half-day experience where we stop complaining and start <strong>building real solutions</strong> to local problems &mdash; together, fast.
-    </div>
-    <div class="tag-row">
-      <span class="tag">&#128506; Local Problems</span>
-      <span class="tag">&#128161; Design Thinking</span>
-      <span class="tag">&#129309; Real Ideas</span>
-      <span class="tag">&#9889; Fast Sprints</span>
-    </div>
-  </div>
-
-  <!-- Event details -->
-  <div class="event-block">
-    <div class="ev-label" style="color:rgba(255,255,255,.35)">Event Details &mdash; ReShuffle</div>
-    <div class="ev-row"><span class="ev-icon">&#128197;</span><span>Saturday, 2nd May 2026</span></div>
-    <div class="ev-row"><span class="ev-icon">&#128205;</span><span>Nukkad</span></div>
-    <div class="ev-row"><span class="ev-icon">&#9200;</span><span>3:30 PM &ndash; 9:00 PM</span></div>
-    <div class="ev-row" style="opacity:.5;font-size:13px"><span class="ev-icon">&#10022;</span><span>Identify &middot; Act &middot; Solve &middot; Build</span></div>
   </div>
 
   <!-- Name -->
@@ -296,7 +280,7 @@ body{
     </div>
   </div>
   <div id="game-arena"></div>
-  <div id="arena-hint">Tap problems to fix them!</div>
+  <div id="arena-hint"><span>&#128070; Tap the boxes to fix them!</span></div>
 </section>
 
 <!-- ===== SCREEN 3: LOSE ===== -->
@@ -327,17 +311,37 @@ body{
 
   <div class="divider">be the one who does</div>
 
-  <div class="event-block">
-    <div class="ev-label" style="color:rgba(255,255,255,.35)">You&#39;re invited to</div>
-    <div class="ev-row"><span style="font-size:22px;font-weight:900;color:var(--yellow)">ReShuffle</span></div>
-    <div class="ev-row"><span class="ev-icon">&#128197;</span><span>2nd May 2026</span></div>
-    <div class="ev-row"><span class="ev-icon">&#128205;</span><span>Nukkad</span></div>
-    <div class="ev-row"><span class="ev-icon">&#9200;</span><span>3:30 PM &ndash; 9:00 PM</span></div>
-    <div style="font-size:12px;opacity:.5;margin-top:2px">Identify real problems. Build real solutions.</div>
+  <div class="reveal-card" id="lose-ev">
+    <div class="event-block">
+      <div class="ev-label" style="color:rgba(255,255,255,.35)">You&#39;re invited to</div>
+      <div class="ev-row"><span style="font-size:22px;font-weight:900;color:var(--yellow)">ReShuffle</span></div>
+      <div class="ev-row"><span class="ev-icon">&#128197;</span><span>2nd May 2026</span></div>
+      <div class="ev-row"><span class="ev-icon">&#128205;</span><span>Nukkad</span></div>
+      <div class="ev-row"><span class="ev-icon">&#9200;</span><span>3:30 PM &ndash; 9:00 PM</span></div>
+      <div class="ev-row"><span class="ev-icon">&#128176;</span><span>Entry: <strong style="color:var(--yellow)">&#8377;250</strong></span></div>
+      <div style="font-size:12px;opacity:.5;margin-top:2px">Identify real problems. Build real solutions.</div>
+    </div>
   </div>
 
-  <div class="btn-group">
-    <button class="btn" id="btn-retry">&#128260; &nbsp;Try Again</button>
+  <div class="reveal-card" id="lose-about" style="transition-delay:.15s">
+    <div class="card" style="background:var(--yellow)">
+      <div class="label" style="margin-bottom:8px">What&#39;s this about?</div>
+      <div style="font-size:15px;font-weight:800;line-height:1.4;margin-bottom:8px">Your city has real problems.<br>Most people just live with them.</div>
+      <div class="body-md" style="color:var(--dark)"><strong>ReShuffle</strong> is a half-day experience where we stop complaining and start <strong>building real solutions</strong> to local problems &mdash; together, fast.</div>
+      <div class="tag-row">
+        <span class="tag">&#128506; Local Problems</span>
+        <span class="tag">&#128161; Design Thinking</span>
+        <span class="tag">&#129309; Real Ideas</span>
+        <span class="tag">&#9889; Fast Sprints</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="reveal-card" id="lose-wa" style="transition-delay:.3s">
+    <div class="btn-group">
+      <a class="btn success" href="https://chat.whatsapp.com/EasQUhCUcdK4ZleIDQCihy" target="_blank" rel="noopener noreferrer">&#128172; &nbsp;Join WhatsApp Group</a>
+      <button class="btn" id="btn-retry">&#128260; &nbsp;Try Again</button>
+    </div>
   </div>
 
 </div>
@@ -369,18 +373,37 @@ body{
     </div>
   </div>
 
-  <div class="event-block">
-    <div class="ev-label" style="color:rgba(255,255,255,.35)">You&#39;re invited to</div>
-    <div class="ev-row"><span style="font-size:22px;font-weight:900;color:var(--yellow)">ReShuffle</span></div>
-    <div class="ev-row"><span class="ev-icon">&#128197;</span><span>2nd May 2026</span></div>
-    <div class="ev-row"><span class="ev-icon">&#128205;</span><span>Nukkad</span></div>
-    <div class="ev-row"><span class="ev-icon">&#9200;</span><span>3:30 PM &ndash; 9:00 PM</span></div>
-    <div style="font-size:12px;opacity:.5;margin-top:2px">Identify &middot; Act &middot; Build &middot; Start something real.</div>
+  <div class="reveal-card" id="win-ev">
+    <div class="event-block">
+      <div class="ev-label" style="color:rgba(255,255,255,.35)">You&#39;re invited to</div>
+      <div class="ev-row"><span style="font-size:22px;font-weight:900;color:var(--yellow)">ReShuffle</span></div>
+      <div class="ev-row"><span class="ev-icon">&#128197;</span><span>2nd May 2026</span></div>
+      <div class="ev-row"><span class="ev-icon">&#128205;</span><span>Nukkad</span></div>
+      <div class="ev-row"><span class="ev-icon">&#9200;</span><span>3:30 PM &ndash; 9:00 PM</span></div>
+      <div class="ev-row"><span class="ev-icon">&#128176;</span><span>Entry: <strong style="color:var(--yellow)">&#8377;250</strong></span></div>
+      <div style="font-size:12px;opacity:.5;margin-top:2px">Identify &middot; Act &middot; Build &middot; Start something real.</div>
+    </div>
   </div>
 
-  <div class="btn-group">
-    <button class="btn success" id="btn-confirm">&#9989; &nbsp;Confirm Attendance</button>
-    <button class="btn secondary" id="btn-share">&#128293; &nbsp;Share My Score</button>
+  <div class="reveal-card" id="win-about" style="transition-delay:.15s">
+    <div class="card" style="background:var(--yellow)">
+      <div class="label" style="margin-bottom:8px">What&#39;s this about?</div>
+      <div style="font-size:15px;font-weight:800;line-height:1.4;margin-bottom:8px">Your city has real problems.<br>Most people just live with them.</div>
+      <div class="body-md" style="color:var(--dark)"><strong>ReShuffle</strong> is a half-day experience where we stop complaining and start <strong>building real solutions</strong> to local problems &mdash; together, fast.</div>
+      <div class="tag-row">
+        <span class="tag">&#128506; Local Problems</span>
+        <span class="tag">&#128161; Design Thinking</span>
+        <span class="tag">&#129309; Real Ideas</span>
+        <span class="tag">&#9889; Fast Sprints</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="reveal-card" id="win-btns" style="transition-delay:.3s">
+    <div class="btn-group">
+      <button class="btn success" id="btn-confirm">&#9989; &nbsp;Confirm Attendance</button>
+      <button class="btn secondary" id="btn-share">&#128293; &nbsp;Share My Score</button>
+    </div>
   </div>
 
 </div>
@@ -403,6 +426,7 @@ body{
     <div class="ev-row"><span class="ev-icon">&#128197;</span><span>Saturday, 2nd May 2026</span></div>
     <div class="ev-row"><span class="ev-icon">&#128205;</span><span>Nukkad</span></div>
     <div class="ev-row"><span class="ev-icon">&#9200;</span><span>3:30 PM &ndash; 9:00 PM</span></div>
+    <div class="ev-row"><span class="ev-icon">&#128176;</span><span>Entry: <strong style="color:var(--yellow)">&#8377;250</strong></span></div>
   </div>
 
   <div class="card" style="background:var(--yellow)">
@@ -501,9 +525,9 @@ function startGame(){
   S.score=0;S.timeLeft=S.WIN_TIME;S.elapsedSecs=0;
   S.problems=[];S.problemCount=0;S.gameRunning=true;S.spawnDelay=1800;
   document.getElementById("game-arena").innerHTML="";
-  document.getElementById("arena-hint").style.opacity=".4";
+  document.getElementById("arena-hint").style.opacity="1";
   updateHUD(); showScreen("game");
-  setTimeout(()=>{if(S.gameRunning)document.getElementById("arena-hint").style.opacity="0"},3000);
+  setTimeout(()=>{if(S.gameRunning)document.getElementById("arena-hint").style.opacity="0"},2800);
   scheduleSpawn();
   S.tickTimer=setInterval(()=>{
     if(!S.gameRunning)return;
@@ -559,10 +583,21 @@ function checkLose(){if(S.problems.length>S.MAX_PROBLEMS)triggerLose()}
 
 function stopGame(){S.gameRunning=false;clearTimeout(S.spawnTimer);clearInterval(S.tickTimer)}
 
+function revealCards(ids){
+  ids.forEach((id,i)=>{
+    setTimeout(()=>{
+      const el=document.getElementById(id);
+      if(el)el.classList.add("visible");
+    },300+i*180);
+  });
+}
+
 function triggerLose(){
   if(!S.gameRunning)return; stopGame();
   document.getElementById("lose-score").textContent=S.score;
+  ["lose-ev","lose-about","lose-wa"].forEach(id=>{const el=document.getElementById(id);if(el)el.classList.remove("visible");});
   showScreen("lose");
+  revealCards(["lose-ev","lose-about","lose-wa"]);
 }
 
 function triggerWin(){
@@ -571,7 +606,9 @@ function triggerWin(){
   const secs=S.WIN_TIME-S.timeLeft;
   document.getElementById("win-personal-line").textContent=
     S.playerName+", you fixed the chaos in "+secs+"s. Now fix real ones.";
+  ["win-ev","win-about","win-btns"].forEach(id=>{const el=document.getElementById(id);if(el)el.classList.remove("visible");});
   showScreen("win");
+  revealCards(["win-ev","win-about","win-btns"]);
 }
 
 function shareScore(){
