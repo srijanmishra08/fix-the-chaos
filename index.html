@@ -101,10 +101,7 @@ body{
 .tag-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
 .tag{display:inline-flex;align-items:center;gap:3px;padding:4px 10px;border-radius:6px;border:1.5px solid rgba(0,0,0,.2);font-size:11px;font-weight:700;background:rgba(255,255,255,.45)}
 
-/* leaderboard teaser */
-.lb-teaser{background:#FAF9F5;border:1.5px dashed #C4C0B8;border-radius:var(--r-md);padding:14px 15px}
-.lb-t-row{display:flex;justify-content:space-between;align-items:center;padding:5px 0;font-size:13px;font-weight:600}
-.lb-t-row:not(:last-child){border-bottom:1px dashed #E0DDD6}
+
 
 /* name input */
 .name-input{
@@ -195,13 +192,7 @@ body{
 .result-wrap{background:var(--yellow);border:2.5px solid var(--dark);border-radius:var(--r-lg);padding:16px 12px;text-align:center}
 .result-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;opacity:.5;margin-bottom:2px}
 
-/* ====== LEADERBOARD ====== */
-.lb-row{display:flex;align-items:center;padding:11px 10px;border-bottom:1px dashed #ddd;font-size:14px;font-weight:600;border-radius:var(--r-sm)}
-.lb-row:last-child{border-bottom:none}
-.lb-rank{width:30px;font-size:17px;font-weight:900;flex-shrink:0}
-.lb-name{flex:1}
-.lb-score{font-weight:900;font-size:16px}
-.lb-row.lb-you{background:var(--yellow-lt);margin:2px -4px;padding:11px 14px}
+
 
 /* confetti */
 .confetti{display:flex;gap:5px;justify-content:center;margin:6px 0}
@@ -213,8 +204,7 @@ body{
 .confetti span:nth-child(5){background:var(--green);animation-delay:.4s}
 @keyframes bounce{from{transform:translateY(0)}to{transform:translateY(-8px)}}
 
-.spinner{width:30px;height:30px;border:3px solid #ddd;border-top-color:var(--dark);border-radius:50%;animation:spin .7s linear infinite;margin:18px auto}
-@keyframes spin{to{transform:rotate(360deg)}}
+
 
 .divider{display:flex;align-items:center;gap:10px;color:var(--mid);font-size:11px;font-weight:600}
 .divider::before,.divider::after{content:'';flex:1;height:1px;background:#ddd}
@@ -270,15 +260,6 @@ body{
     <div class="ev-row"><span class="ev-icon">&#128205;</span><span>Nukkad</span></div>
     <div class="ev-row"><span class="ev-icon">&#9200;</span><span>3:30 PM &ndash; 9:00 PM</span></div>
     <div class="ev-row" style="opacity:.5;font-size:13px"><span class="ev-icon">&#10022;</span><span>Identify &middot; Act &middot; Solve &middot; Build</span></div>
-  </div>
-
-  <!-- LB teaser -->
-  <div class="lb-teaser">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
-      <span style="font-size:12px;font-weight:800">&#127942; Top Scores</span>
-      <span class="body-sm">Beat them &#128064;</span>
-    </div>
-    <div id="start-lb-rows"><div class="spinner"></div></div>
   </div>
 
   <!-- Name -->
@@ -357,7 +338,6 @@ body{
 
   <div class="btn-group">
     <button class="btn" id="btn-retry">&#128260; &nbsp;Try Again</button>
-    <button class="btn secondary" id="btn-lb-from-lose">&#127942; &nbsp;View Leaderboard</button>
   </div>
 
 </div>
@@ -401,38 +381,12 @@ body{
   <div class="btn-group">
     <button class="btn success" id="btn-confirm">&#9989; &nbsp;Confirm Attendance</button>
     <button class="btn secondary" id="btn-share">&#128293; &nbsp;Share My Score</button>
-    <button class="btn secondary" id="btn-lb-from-win">&#127942; &nbsp;View Leaderboard</button>
   </div>
 
 </div>
 </section>
 
-<!-- ===== SCREEN 5: LEADERBOARD ===== -->
-<section class="screen" id="screen-leaderboard">
-<div class="inner">
 
-  <div class="card no-tape center" style="background:var(--dark);color:#fff;padding:22px 18px">
-    <div style="font-size:36px">&#127942;</div>
-    <div class="title-lg" style="margin-top:4px">Leaderboard</div>
-    <div style="font-size:12px;opacity:.45;margin-top:4px">Fix The Chaos &mdash; Global Scores</div>
-  </div>
-
-  <div class="card no-tape" style="padding:14px 10px">
-    <div id="lb-list"><div class="spinner"></div></div>
-  </div>
-
-  <div class="card" style="background:var(--yellow-lt);text-align:center;padding:14px 16px">
-    <div style="font-size:14px;font-weight:700">Beat the top score to dominate &#128640;</div>
-    <div class="body-sm" style="margin-top:4px">Every replay makes you sharper.</div>
-  </div>
-
-  <div class="btn-group">
-    <button class="btn" id="btn-play-again-lb">&#9654; &nbsp;Play Again</button>
-    <button class="btn secondary" id="btn-back-from-lb">&#8592; &nbsp;Back</button>
-  </div>
-
-</div>
-</section>
 
 <!-- ===== SCREEN 6: CONFIRM ===== -->
 <section class="screen" id="screen-confirm">
@@ -460,7 +414,7 @@ body{
 
   <div class="btn-group">
     <a class="btn success" id="btn-whatsapp"
-      href="https://wa.me/YOUR_NUMBER?text=I%27m+in+for+ReShuffle+on+2nd+May+2026!"
+      href="https://chat.whatsapp.com/EasQUhCUcdK4ZleIDQCihy"
       target="_blank" rel="noopener noreferrer">
       &#128172; &nbsp;Join WhatsApp Group
     </a>
@@ -472,33 +426,7 @@ body{
 </div>
 </section>
 
-<!-- ===== FIREBASE ===== -->
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getFirestore, collection, addDoc, getDocs, query, orderBy, limit, serverTimestamp }
-  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-// -- Replace with your Firebase project config --
-const firebaseConfig = {
-  apiKey:            "YOUR_API_KEY",
-  authDomain:        "YOUR_PROJECT.firebaseapp.com",
-  projectId:         "YOUR_PROJECT_ID",
-  storageBucket:     "YOUR_PROJECT.appspot.com",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId:             "YOUR_APP_ID"
-};
-// -----------------------------------------------
-
-const app = initializeApp(firebaseConfig);
-const db  = getFirestore(app);
-window._db = db; window._col = "scores";
-window._addDoc = addDoc; window._collection = collection;
-window._getDocs = getDocs; window._query = query;
-window._orderBy = orderBy; window._limit = limit;
-window._serverTimestamp = serverTimestamp;
-window._firebaseReady = true;
-window.dispatchEvent(new Event("firebaseReady"));
-</script>
 
 <!-- ===== GAME LOGIC ===== -->
 <script>
@@ -542,55 +470,6 @@ document.getElementById("player-name-input").addEventListener("input",function()
   S.playerName=v||"Player";
   document.getElementById("start-playing-as").textContent=v?"Playing as: "+v:"";
 });
-
-async function fetchTop(n){
-  if(!window._firebaseReady) return [];
-  try{
-    const q=window._query(window._collection(window._db,window._col),
-      window._orderBy("score","desc"),window._limit(n));
-    const snap=await window._getDocs(q);
-    return snap.docs.map(d=>({name:d.data().name,score:d.data().score}));
-  }catch(e){return []}
-}
-async function submitScore(name,score){
-  if(!window._firebaseReady) return;
-  try{await window._addDoc(window._collection(window._db,window._col),
-    {name,score,ts:window._serverTimestamp()});}catch(e){}
-}
-
-async function loadTeaser(){
-  const scores=await fetchTop(3);
-  const el=document.getElementById("start-lb-rows");
-  if(!scores.length){
-    el.innerHTML='<div style="font-size:13px;opacity:.5;padding:6px 0">No scores yet &mdash; be the first!</div>';
-    return;
-  }
-  el.innerHTML=scores.map((s,i)=>`<div class="lb-t-row">
-    <span>${["&#127945;","&#127946;","&#127947;"][i]} ${s.name}</span><strong>${s.score}</strong>
-  </div>`).join("");
-}
-
-async function renderLeaderboard(){
-  const el=document.getElementById("lb-list");
-  el.innerHTML='<div class="spinner"></div>';
-  const scores=await fetchTop(10);
-  if(!scores.length){
-    el.innerHTML='<p class="center body-sm" style="padding:14px 0">No scores yet &mdash; play first!</p>';
-    return;
-  }
-  const me=S.playerName.toLowerCase(); let found=false;
-  el.innerHTML=scores.map((s,i)=>{
-    const isYou=s.name.toLowerCase()===me; if(isYou)found=true;
-    const medal=["&#127945;","&#127946;","&#127947;"][i]||(i+1)+".";
-    return `<div class="lb-row${isYou?" lb-you":""}">
-      <span class="lb-rank">${medal}</span>
-      <span class="lb-name">${s.name}${isYou?" <strong>(You)</strong>":""}</span>
-      <span class="lb-score">${s.score}</span>
-    </div>`;
-  }).join("")+(!found&&S.score>0?`<div class="lb-row lb-you" style="margin-top:6px;border-top:1.5px dashed #ddd;padding-top:12px">
-    <span class="lb-rank">&mdash;</span><span class="lb-name">${S.playerName} <strong>(You)</strong></span>
-    <span class="lb-score">${S.score}</span></div>`:"");
-}
 
 function updateHUD(){
   document.getElementById("score-val").textContent=S.score;
@@ -683,7 +562,7 @@ function stopGame(){S.gameRunning=false;clearTimeout(S.spawnTimer);clearInterval
 function triggerLose(){
   if(!S.gameRunning)return; stopGame();
   document.getElementById("lose-score").textContent=S.score;
-  showScreen("lose"); submitScore(S.playerName,S.score);
+  showScreen("lose");
 }
 
 function triggerWin(){
@@ -692,7 +571,7 @@ function triggerWin(){
   const secs=S.WIN_TIME-S.timeLeft;
   document.getElementById("win-personal-line").textContent=
     S.playerName+", you fixed the chaos in "+secs+"s. Now fix real ones.";
-  showScreen("win"); submitScore(S.playerName,S.score);
+  showScreen("win");
 }
 
 function shareScore(){
@@ -704,17 +583,9 @@ function shareScore(){
 
 document.getElementById("btn-start").addEventListener("click",startGame);
 document.getElementById("btn-retry").addEventListener("click",()=>showScreen("start"));
-document.getElementById("btn-lb-from-lose").addEventListener("click",async()=>{showScreen("leaderboard");await renderLeaderboard()});
 document.getElementById("btn-confirm").addEventListener("click",()=>showScreen("confirm"));
-document.getElementById("btn-lb-from-win").addEventListener("click",async()=>{showScreen("leaderboard");await renderLeaderboard()});
 document.getElementById("btn-share").addEventListener("click",shareScore);
-document.getElementById("btn-play-again-lb").addEventListener("click",()=>showScreen("start"));
-document.getElementById("btn-back-from-lb").addEventListener("click",()=>showScreen("start"));
 document.getElementById("btn-back-confirm").addEventListener("click",()=>showScreen("win"));
-
-function init(){loadTeaser()}
-if(window._firebaseReady){init()}
-else{window.addEventListener("firebaseReady",init,{once:true});setTimeout(init,3000)}
 </script>
 </body>
 </html>
