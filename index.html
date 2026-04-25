@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="default" />
+<meta name="theme-color" content="#F5F3EE" />
+<title>Fix The Chaos &#129513; &#8212; ReShuffle</title>
+<meta property="og:title" content="Fix The Chaos &#8212; Can you handle it?" />
+<meta property="og:description" content="A 30-second challenge. Then an invitation to ReShuffle on 2nd May." />
+<meta property="og:type" content="website" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,600;0,700;0,900;1,400&display=swap" rel="stylesheet" />
+<style>
+/* ====== BASE ====== */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#F5F3EE;--paper:#FFFDF8;--dark:#1C1C1C;--mid:#666;
+  --yellow:#FFD600;--yellow-lt:#FFF9C4;--orange:#FF6B2B;
+  --red:#E53935;--green:#2E7D32;--green-lt:#C8E6C9;
+  --blue:#1565C0;
+  --r-sm:10px;--r-md:16px;--r-lg:22px;
+  --sat:env(safe-area-inset-top,0px);--sab:env(safe-area-inset-bottom,0px);
+  --sal:env(safe-area-inset-left,0px);--sar:env(safe-area-inset-right,0px);
+}
+html,body{height:100%;overscroll-behavior:none}
+body{
+  font-family:'Poppins',sans-serif;background:var(--bg);color:var(--dark);
+  -webkit-font-smoothing:antialiased;touch-action:manipulation;
+  -webkit-tap-highlight-color:transparent;
+  background-image:radial-gradient(circle,rgba(0,0,0,.055) 1px,transparent 1px);
+  background-size:22px 22px;background-color:var(--bg);
+}
+
+/* ====== SCREENS ====== */
+.screen{
+  display:none;flex-direction:column;align-items:center;
+  width:100%;min-height:100dvh;min-height:100vh;
+  overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;
+  padding-top:calc(var(--sat) + 20px);
+  padding-bottom:calc(var(--sab) + 36px);
+  padding-left:calc(var(--sal) + 14px);
+  padding-right:calc(var(--sar) + 14px);
+}
+.screen.active{display:flex}
+.inner{width:100%;max-width:440px;display:flex;flex-direction:column;gap:13px;padding-bottom:6px}
+.screen.active>.inner{animation:slideUp .3s cubic-bezier(.25,.46,.45,.94) both}
+@keyframes slideUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+
+/* ====== CARDS ====== */
+.card{
+  background:var(--paper);border:2.5px solid var(--dark);
+  border-radius:var(--r-lg);padding:20px 18px;
+  box-shadow:5px 5px 0 var(--dark);position:relative;overflow:hidden;
+}
+.card::before{
+  content:'';position:absolute;top:-1px;right:18px;
+  width:34px;height:9px;background:var(--yellow);
+  border:1.5px solid var(--dark);border-top:none;
+  border-radius:0 0 4px 4px;opacity:.85;
+}
+.card.no-tape::before{display:none}
+
+/* ====== BUTTONS ====== */
+.btn{
+  display:flex;align-items:center;justify-content:center;gap:6px;
+  width:100%;padding:15px 18px;border-radius:var(--r-md);
+  border:2.5px solid var(--dark);font-family:'Poppins',sans-serif;
+  font-size:15px;font-weight:700;cursor:pointer;
+  transition:transform .1s,box-shadow .1s;
+  box-shadow:4px 4px 0 var(--dark);background:var(--yellow);
+  color:var(--dark);text-decoration:none;user-select:none;
+  -webkit-tap-highlight-color:transparent;min-height:52px;
+}
+.btn:active{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--dark)}
+.btn.secondary{background:var(--paper)}
+.btn.success{background:var(--green);color:#fff;border-color:var(--green);box-shadow:4px 4px 0 #1B5E20}
+.btn.success:active{box-shadow:2px 2px 0 #1B5E20}
+.btn-group{display:flex;flex-direction:column;gap:10px}
+
+/* ====== TYPE ====== */
+.title-lg{font-size:clamp(20px,6vw,28px);font-weight:800;line-height:1.1}
+.body-md{font-size:14px;line-height:1.65;color:var(--mid)}
+.body-sm{font-size:12px;line-height:1.5;color:var(--mid)}
+.label{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;opacity:.45}
+.center{text-align:center}
+.score-huge{font-size:clamp(54px,18vw,82px);font-weight:900;line-height:1}
+
+/* ====== EVENT BLOCK ====== */
+.event-block{
+  background:var(--dark);color:#fff;border-radius:var(--r-md);
+  padding:18px 18px;display:flex;flex-direction:column;gap:10px;
+}
+.ev-row{display:flex;align-items:center;gap:10px;font-size:15px;font-weight:600}
+.ev-icon{font-size:19px;width:26px;text-align:center;flex-shrink:0}
+.ev-label{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;opacity:.4;margin-bottom:2px}
+
+/* ====== TAGS ====== */
+.tag-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.tag{display:inline-flex;align-items:center;gap:3px;padding:4px 10px;border-radius:6px;border:1.5px solid rgba(0,0,0,.2);font-size:11px;font-weight:700;background:rgba(255,255,255,.45)}
+
+/* leaderboard teaser */
+.lb-teaser{background:#FAF9F5;border:1.5px dashed #C4C0B8;border-radius:var(--r-md);padding:14px 15px}
+.lb-t-row{display:flex;justify-content:space-between;align-items:center;padding:5px 0;font-size:13px;font-weight:600}
+.lb-t-row:not(:last-child){border-bottom:1px dashed #E0DDD6}
+
+/* name input */
+.name-input{
+  width:100%;padding:14px 15px;border:2.5px solid var(--dark);
+  border-radius:var(--r-md);font-family:'Poppins',sans-serif;
+  font-size:15px;font-weight:600;background:var(--paper);outline:none;
+  box-shadow:3px 3px 0 var(--dark);transition:box-shadow .15s,border-color .15s;
+  min-height:52px;
+}
+.name-input:focus{box-shadow:3px 3px 0 var(--orange);border-color:var(--orange)}
+
+/* ====== GAME HUD ====== */
+#screen-game{padding:0;overflow:hidden;position:relative}
+#game-hud{
+  position:fixed;top:0;left:50%;transform:translateX(-50%);
+  width:100%;max-width:440px;z-index:20;
+  background:var(--bg);border-bottom:2.5px solid var(--dark);
+  padding:calc(var(--sat) + 10px) 16px 10px;
+  background-image:radial-gradient(circle,rgba(0,0,0,.055) 1px,transparent 1px);
+  background-size:22px 22px;background-color:var(--bg);
+}
+#hud-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+#hud-score{background:var(--dark);color:#fff;border-radius:99px;padding:5px 14px;font-size:14px;font-weight:800}
+#hud-timer{background:var(--yellow);border:2px solid var(--dark);border-radius:99px;padding:5px 14px;font-size:14px;font-weight:800;transition:background .2s,color .2s}
+#hud-timer.urgent{background:var(--red);color:#fff;animation:timerPulse .5s infinite alternate}
+@keyframes timerPulse{to{transform:scale(1.08)}}
+#hud-chaos-wrap{display:flex;align-items:center;gap:8px}
+#hud-chaos-label{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;opacity:.45;white-space:nowrap}
+#chaos-bar-track{flex:1;height:8px;background:#E0DDD6;border-radius:99px;border:1.5px solid var(--dark);overflow:hidden}
+#chaos-bar{height:100%;background:var(--yellow);border-radius:99px;transition:width .35s,background .35s;width:0%}
+#hud-chaos-count{font-size:11px;font-weight:800;opacity:.6;min-width:28px;text-align:right}
+
+#game-arena{position:fixed;inset:0;padding-top:80px;overflow:hidden}
+#chaos-overlay{
+  position:fixed;inset:0;pointer-events:none;z-index:8;
+  background:radial-gradient(ellipse at center,transparent 40%,rgba(229,57,53,0) 100%);
+  opacity:0;transition:opacity .4s;
+}
+#arena-hint{
+  position:fixed;bottom:calc(var(--sab) + 16px);left:0;right:0;
+  text-align:center;font-size:12px;font-weight:700;opacity:.4;
+  pointer-events:none;z-index:5;transition:opacity .5s;
+}
+
+/* ====== PROBLEM ITEMS ====== */
+.problem-item{
+  position:absolute;cursor:pointer;user-select:none;
+  -webkit-tap-highlight-color:transparent;z-index:10;
+  animation:popIn .28s cubic-bezier(.36,.07,.19,.97) both;
+  touch-action:manipulation;
+}
+@keyframes popIn{
+  0%{transform:scale(0) rotate(-12deg);opacity:0}
+  70%{transform:scale(1.15) rotate(4deg);opacity:1}
+  100%{transform:scale(1) rotate(0deg);opacity:1}
+}
+.bubble{
+  background:var(--paper);border:2.5px solid var(--dark);
+  border-radius:var(--r-md);padding:10px 10px;
+  font-size:11px;font-weight:700;box-shadow:4px 4px 0 var(--dark);
+  width:96px;line-height:1.3;text-align:center;
+  animation:drift 3s ease-in-out infinite alternate;
+}
+@keyframes drift{
+  0%{transform:rotate(-2.5deg) translateY(0)}
+  50%{transform:rotate(1.5deg) translateY(-3px)}
+  100%{transform:rotate(-1deg) translateY(2px)}
+}
+.icon{font-size:28px;display:block;margin-bottom:4px;line-height:1}
+.problem-item.chit .bubble{background:#FFF9C4;width:116px;font-size:10px;border-style:dashed}
+.problem-item.chit .icon{font-size:20px}
+.problem-item.urgent .bubble{border-color:var(--red);box-shadow:4px 4px 0 var(--red);background:#FFEBEE}
+
+.score-pop{
+  position:absolute;font-size:22px;font-weight:900;color:var(--green);
+  -webkit-text-stroke:1px var(--dark);pointer-events:none;z-index:50;
+  animation:floatUp .8s ease-out forwards;
+}
+@keyframes floatUp{0%{opacity:1;transform:translateY(0) scale(1.3)}100%{opacity:0;transform:translateY(-70px) scale(.9)}}
+
+@keyframes arenaShake{
+  0%,100%{transform:translateX(0)}20%{transform:translateX(-8px)}
+  40%{transform:translateX(8px)}60%{transform:translateX(-5px)}80%{transform:translateX(5px)}
+}
+.arena-shake{animation:arenaShake .35s ease-in-out}
+
+/* ====== END SCREENS ====== */
+.result-wrap{background:var(--yellow);border:2.5px solid var(--dark);border-radius:var(--r-lg);padding:16px 12px;text-align:center}
+.result-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;opacity:.5;margin-bottom:2px}
+
+/* ====== LEADERBOARD ====== */
+.lb-row{display:flex;align-items:center;padding:11px 10px;border-bottom:1px dashed #ddd;font-size:14px;font-weight:600;border-radius:var(--r-sm)}
+.lb-row:last-child{border-bottom:none}
+.lb-rank{width:30px;font-size:17px;font-weight:900;flex-shrink:0}
+.lb-name{flex:1}
+.lb-score{font-weight:900;font-size:16px}
+.lb-row.lb-you{background:var(--yellow-lt);margin:2px -4px;padding:11px 14px}
+
+/* confetti */
+.confetti{display:flex;gap:5px;justify-content:center;margin:6px 0}
+.confetti span{width:10px;height:10px;border-radius:50%;animation:bounce .6s ease-in-out infinite alternate}
+.confetti span:nth-child(1){background:var(--yellow);animation-delay:0s}
+.confetti span:nth-child(2){background:var(--orange);animation-delay:.1s}
+.confetti span:nth-child(3){background:var(--red);animation-delay:.2s}
+.confetti span:nth-child(4){background:var(--blue);animation-delay:.3s}
+.confetti span:nth-child(5){background:var(--green);animation-delay:.4s}
+@keyframes bounce{from{transform:translateY(0)}to{transform:translateY(-8px)}}
+
+.spinner{width:30px;height:30px;border:3px solid #ddd;border-top-color:var(--dark);border-radius:50%;animation:spin .7s linear infinite;margin:18px auto}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+.divider{display:flex;align-items:center;gap:10px;color:var(--mid);font-size:11px;font-weight:600}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:#ddd}
+
+.deco{position:fixed;background:var(--yellow-lt);border:1.5px solid #E0D800;padding:7px 11px;font-size:10px;font-weight:700;border-radius:3px;opacity:.4;pointer-events:none;z-index:0;box-shadow:2px 2px 0 rgba(0,0,0,.07)}
+</style>
+</head>
+<body>
+
+<div class="deco" style="top:6%;left:3%;transform:rotate(-9deg)">solve it!</div>
+<div class="deco" style="bottom:8%;right:2%;transform:rotate(6deg)">build!</div>
+
+<!-- ===== SCREEN 1: START ===== -->
+<section class="screen active" id="screen-start">
+<div class="inner">
+
+  <!-- Hero -->
+  <div class="card no-tape center" style="background:var(--dark);color:#fff;padding:28px 18px 22px">
+    <div style="font-size:50px;margin-bottom:8px">&#129513;</div>
+    <div style="font-size:clamp(30px,10vw,46px);font-weight:900;letter-spacing:-1px;line-height:1">
+      Fix The <span style="color:var(--yellow)">Chaos</span>
+    </div>
+    <div style="font-size:13px;opacity:.55;margin-top:6px;font-style:italic">
+      How fast can you solve local problems?
+    </div>
+    <div style="display:inline-flex;align-items:center;gap:6px;background:var(--orange);color:#fff;border:2px solid rgba(255,255,255,.25);border-radius:99px;padding:5px 14px;font-size:12px;font-weight:800;margin-top:14px;box-shadow:0 3px 10px rgba(0,0,0,.3)">
+      &#10022; ReShuffle &nbsp;&middot;&nbsp; 2nd May 2026
+    </div>
+  </div>
+
+  <!-- What is this -->
+  <div class="card" style="background:var(--yellow)">
+    <div class="label" style="margin-bottom:8px">What&#39;s this about?</div>
+    <div style="font-size:16px;font-weight:800;line-height:1.4;margin-bottom:8px">
+      Your city has real problems.<br>
+      Most people just live with them.
+    </div>
+    <div class="body-md" style="color:var(--dark)">
+      <strong>ReShuffle</strong> is a half-day experience where we stop complaining and start <strong>building real solutions</strong> to local problems &mdash; together, fast.
+    </div>
+    <div class="tag-row">
+      <span class="tag">&#128506; Local Problems</span>
+      <span class="tag">&#128161; Design Thinking</span>
+      <span class="tag">&#129309; Real Ideas</span>
+      <span class="tag">&#9889; Fast Sprints</span>
+    </div>
+  </div>
+
+  <!-- Event details -->
+  <div class="event-block">
+    <div class="ev-label" style="color:rgba(255,255,255,.35)">Event Details &mdash; ReShuffle</div>
+    <div class="ev-row"><span class="ev-icon">&#128197;</span><span>Saturday, 2nd May 2026</span></div>
+    <div class="ev-row"><span class="ev-icon">&#128205;</span><span>Nukkad</span></div>
+    <div class="ev-row"><span class="ev-icon">&#9200;</span><span>3:30 PM &ndash; 9:00 PM</span></div>
+    <div class="ev-row" style="opacity:.5;font-size:13px"><span class="ev-icon">&#10022;</span><span>Identify &middot; Act &middot; Solve &middot; Build</span></div>
+  </div>
+
+  <!-- LB teaser -->
+  <div class="lb-teaser">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+      <span style="font-size:12px;font-weight:800">&#127942; Top Scores</span>
+      <span class="body-sm">Beat them &#128064;</span>
+    </div>
+    <div id="start-lb-rows"><div class="spinner"></div></div>
+  </div>
+
+  <!-- Name -->
+  <div>
+    <div class="label" style="margin-bottom:6px">Your name</div>
+    <input id="player-name-input" class="name-input" type="text" placeholder="Enter your name&#8230;"
+      maxlength="24" autocomplete="off" autocorrect="off" spellcheck="false" />
+    <div id="start-playing-as" style="font-size:12px;color:var(--mid);margin-top:6px;min-height:16px"></div>
+  </div>
+
+  <!-- CTA -->
+  <button class="btn" id="btn-start" style="font-size:17px;padding:18px;min-height:58px">
+    &#9654; &nbsp;Start the Challenge
+  </button>
+  <div class="center body-sm" style="padding-bottom:4px">
+    Tap problems to fix them &middot; Survive 30 seconds or score 50 to win
+  </div>
+
+</div>
+</section>
+
+<!-- ===== SCREEN 2: GAME ===== -->
+<section class="screen" id="screen-game">
+  <div id="chaos-overlay"></div>
+  <div id="game-hud">
+    <div id="hud-top">
+      <div id="hud-score">Score: <span id="score-val">0</span></div>
+      <div id="hud-timer">&#9201; <span id="timer-val">30</span>s</div>
+    </div>
+    <div id="hud-chaos-wrap">
+      <div id="hud-chaos-label">Chaos</div>
+      <div id="chaos-bar-track"><div id="chaos-bar"></div></div>
+      <div id="hud-chaos-count">0/6</div>
+    </div>
+  </div>
+  <div id="game-arena"></div>
+  <div id="arena-hint">Tap problems to fix them!</div>
+</section>
+
+<!-- ===== SCREEN 3: LOSE ===== -->
+<section class="screen" id="screen-lose">
+<div class="inner">
+
+  <div class="card no-tape center" style="background:var(--dark);color:#fff;padding:24px 18px">
+    <div style="font-size:48px">&#9888;&#65039;</div>
+    <div class="title-lg" style="margin-top:6px">Chaos Took Over.</div>
+    <div style="font-size:13px;opacity:.5;margin-top:4px">The city needed you faster.</div>
+  </div>
+
+  <div class="result-wrap">
+    <div class="result-label">Your Score</div>
+    <div class="score-huge" id="lose-score">0</div>
+  </div>
+
+  <div class="card" style="background:#FFF5F5;border-color:var(--red)">
+    <div style="font-size:15px;font-weight:700;line-height:1.65">
+      &ldquo;Most people stop here.<br>
+      Few try again.<br>
+      <span style="color:var(--red)">Even fewer build solutions.</span>&rdquo;
+    </div>
+    <div style="margin-top:10px;font-size:13px;color:var(--mid);font-weight:600">
+      But the ones who do? They <strong style="color:var(--dark)">change things.</strong>
+    </div>
+  </div>
+
+  <div class="divider">be the one who does</div>
+
+  <div class="event-block">
+    <div class="ev-label" style="color:rgba(255,255,255,.35)">You&#39;re invited to</div>
+    <div class="ev-row"><span style="font-size:22px;font-weight:900;color:var(--yellow)">ReShuffle</span></div>
+    <div class="ev-row"><span class="ev-icon">&#128197;</span><span>2nd May 2026</span></div>
+    <div class="ev-row"><span class="ev-icon">&#128205;</span><span>Nukkad</span></div>
+    <div class="ev-row"><span class="ev-icon">&#9200;</span><span>3:30 PM &ndash; 9:00 PM</span></div>
+    <div style="font-size:12px;opacity:.5;margin-top:2px">Identify real problems. Build real solutions.</div>
+  </div>
+
+  <div class="btn-group">
+    <button class="btn" id="btn-retry">&#128260; &nbsp;Try Again</button>
+    <button class="btn secondary" id="btn-lb-from-lose">&#127942; &nbsp;View Leaderboard</button>
+  </div>
+
+</div>
+</section>
+
+<!-- ===== SCREEN 4: WIN ===== -->
+<section class="screen" id="screen-win">
+<div class="inner">
+
+  <div class="card no-tape center" style="background:var(--dark);color:#fff;padding:24px 18px">
+    <div style="font-size:48px">&#127881;</div>
+    <div class="confetti"><span></span><span></span><span></span><span></span><span></span></div>
+    <div class="title-lg" style="margin-top:4px">You Fixed The Chaos!</div>
+    <div style="font-size:13px;opacity:.55;margin-top:4px" id="win-personal-line">Now solve real ones.</div>
+  </div>
+
+  <div class="result-wrap">
+    <div class="result-label">Your Score</div>
+    <div class="score-huge" id="win-score">0</div>
+  </div>
+
+  <div class="card" style="background:var(--green-lt);border-color:var(--green)">
+    <div style="font-size:15px;font-weight:700;line-height:1.65">
+      You just handled <strong>chaos in a game.</strong><br>
+      Imagine what you can do with <strong style="color:var(--green)">real local problems.</strong>
+    </div>
+    <div style="margin-top:8px;font-size:13px;color:var(--mid)">
+      That&#39;s exactly what <strong style="color:var(--dark)">ReShuffle</strong> is &mdash; a half-day sprint to build ideas that actually matter for your city.
+    </div>
+  </div>
+
+  <div class="event-block">
+    <div class="ev-label" style="color:rgba(255,255,255,.35)">You&#39;re invited to</div>
+    <div class="ev-row"><span style="font-size:22px;font-weight:900;color:var(--yellow)">ReShuffle</span></div>
+    <div class="ev-row"><span class="ev-icon">&#128197;</span><span>2nd May 2026</span></div>
+    <div class="ev-row"><span class="ev-icon">&#128205;</span><span>Nukkad</span></div>
+    <div class="ev-row"><span class="ev-icon">&#9200;</span><span>3:30 PM &ndash; 9:00 PM</span></div>
+    <div style="font-size:12px;opacity:.5;margin-top:2px">Identify &middot; Act &middot; Build &middot; Start something real.</div>
+  </div>
+
+  <div class="btn-group">
+    <button class="btn success" id="btn-confirm">&#9989; &nbsp;Confirm Attendance</button>
+    <button class="btn secondary" id="btn-share">&#128293; &nbsp;Share My Score</button>
+    <button class="btn secondary" id="btn-lb-from-win">&#127942; &nbsp;View Leaderboard</button>
+  </div>
+
+</div>
+</section>
+
+<!-- ===== SCREEN 5: LEADERBOARD ===== -->
+<section class="screen" id="screen-leaderboard">
+<div class="inner">
+
+  <div class="card no-tape center" style="background:var(--dark);color:#fff;padding:22px 18px">
+    <div style="font-size:36px">&#127942;</div>
+    <div class="title-lg" style="margin-top:4px">Leaderboard</div>
+    <div style="font-size:12px;opacity:.45;margin-top:4px">Fix The Chaos &mdash; Global Scores</div>
+  </div>
+
+  <div class="card no-tape" style="padding:14px 10px">
+    <div id="lb-list"><div class="spinner"></div></div>
+  </div>
+
+  <div class="card" style="background:var(--yellow-lt);text-align:center;padding:14px 16px">
+    <div style="font-size:14px;font-weight:700">Beat the top score to dominate &#128640;</div>
+    <div class="body-sm" style="margin-top:4px">Every replay makes you sharper.</div>
+  </div>
+
+  <div class="btn-group">
+    <button class="btn" id="btn-play-again-lb">&#9654; &nbsp;Play Again</button>
+    <button class="btn secondary" id="btn-back-from-lb">&#8592; &nbsp;Back</button>
+  </div>
+
+</div>
+</section>
+
+<!-- ===== SCREEN 6: CONFIRM ===== -->
+<section class="screen" id="screen-confirm">
+<div class="inner">
+
+  <div class="card no-tape center" style="background:var(--green);color:#fff;padding:28px 18px">
+    <div style="font-size:56px">&#9989;</div>
+    <div class="title-lg" style="margin-top:8px">You&#39;re In!</div>
+    <div style="font-size:13px;opacity:.75;margin-top:4px">We&#39;ve reserved your spot at ReShuffle.</div>
+  </div>
+
+  <div class="event-block">
+    <div class="ev-label" style="color:rgba(255,255,255,.35)">Where &amp; When</div>
+    <div class="ev-row"><span class="ev-icon">&#128197;</span><span>Saturday, 2nd May 2026</span></div>
+    <div class="ev-row"><span class="ev-icon">&#128205;</span><span>Nukkad</span></div>
+    <div class="ev-row"><span class="ev-icon">&#9200;</span><span>3:30 PM &ndash; 9:00 PM</span></div>
+  </div>
+
+  <div class="card" style="background:var(--yellow)">
+    <div style="font-size:14px;font-weight:700;margin-bottom:6px">What happens there?</div>
+    <div class="body-md" style="color:var(--dark)">
+      A structured sprint where you <strong>identify real neighbourhood problems</strong>, build rough solutions with a team, and pitch them. Fast, fun, and genuinely useful.
+    </div>
+  </div>
+
+  <div class="btn-group">
+    <a class="btn success" id="btn-whatsapp"
+      href="https://wa.me/YOUR_NUMBER?text=I%27m+in+for+ReShuffle+on+2nd+May+2026!"
+      target="_blank" rel="noopener noreferrer">
+      &#128172; &nbsp;Join WhatsApp Group
+    </a>
+    <button class="btn secondary" id="btn-back-confirm">&#8592; &nbsp;Back</button>
+  </div>
+
+  <div class="center" style="font-size:16px;font-weight:700;padding:6px 0">See you there &#128075;</div>
+
+</div>
+</section>
+
+<!-- ===== FIREBASE ===== -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, collection, addDoc, getDocs, query, orderBy, limit, serverTimestamp }
+  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+// -- Replace with your Firebase project config --
+const firebaseConfig = {
+  apiKey:            "YOUR_API_KEY",
+  authDomain:        "YOUR_PROJECT.firebaseapp.com",
+  projectId:         "YOUR_PROJECT_ID",
+  storageBucket:     "YOUR_PROJECT.appspot.com",
+  messagingSenderId: "YOUR_SENDER_ID",
+  appId:             "YOUR_APP_ID"
+};
+// -----------------------------------------------
+
+const app = initializeApp(firebaseConfig);
+const db  = getFirestore(app);
+window._db = db; window._col = "scores";
+window._addDoc = addDoc; window._collection = collection;
+window._getDocs = getDocs; window._query = query;
+window._orderBy = orderBy; window._limit = limit;
+window._serverTimestamp = serverTimestamp;
+window._firebaseReady = true;
+window.dispatchEvent(new Event("firebaseReady"));
+</script>
+
+<!-- ===== GAME LOGIC ===== -->
+<script>
+const S = {
+  playerName:"Player", score:0, timeLeft:30, elapsedSecs:0,
+  problems:[], problemCount:0, gameRunning:false,
+  spawnTimer:null, tickTimer:null,
+  WIN_SCORE:50, WIN_TIME:30, MAX_PROBLEMS:6, spawnDelay:1800,
+};
+
+const TYPES = [
+  {id:"trash",  icon:"&#128465;", label:"Trash pile",      pts:1, cls:""},
+  {id:"light",  icon:"&#128161;", label:"Broken light",    pts:2, cls:""},
+  {id:"boxes",  icon:"&#128230;", label:"Scattered boxes", pts:1, cls:""},
+  {id:"pothole",icon:"&#9898;",   label:"Pothole",         pts:2, cls:"urgent"},
+  {id:"wire",   icon:"&#9889;",   label:"Loose wires",     pts:3, cls:"urgent"},
+  {id:"chit",   icon:"&#129534;", label:null,              pts:3, cls:"chit"},
+];
+const COMPLAINTS = [
+  "No streetlights","Too much plastic waste","No proper transport",
+  "Overflowing dustbin","Open drain nearby","No bus shelter",
+  "Broken road tiles","Illegal parking","No public toilet","Waterlogging every rain",
+];
+
+function showScreen(id){
+  document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
+  const el=document.getElementById("screen-"+id);
+  el.classList.add("active"); el.scrollTop=0;
+}
+
+(function(){
+  const p=new URLSearchParams(window.location.search), n=p.get("name");
+  if(!n) return;
+  S.playerName=decodeURIComponent(n).trim().slice(0,24);
+  document.getElementById("player-name-input").value=S.playerName;
+  document.getElementById("start-playing-as").textContent="Playing as: "+S.playerName;
+})();
+
+document.getElementById("player-name-input").addEventListener("input",function(){
+  const v=this.value.trim();
+  S.playerName=v||"Player";
+  document.getElementById("start-playing-as").textContent=v?"Playing as: "+v:"";
+});
+
+async function fetchTop(n){
+  if(!window._firebaseReady) return [];
+  try{
+    const q=window._query(window._collection(window._db,window._col),
+      window._orderBy("score","desc"),window._limit(n));
+    const snap=await window._getDocs(q);
+    return snap.docs.map(d=>({name:d.data().name,score:d.data().score}));
+  }catch(e){return []}
+}
+async function submitScore(name,score){
+  if(!window._firebaseReady) return;
+  try{await window._addDoc(window._collection(window._db,window._col),
+    {name,score,ts:window._serverTimestamp()});}catch(e){}
+}
+
+async function loadTeaser(){
+  const scores=await fetchTop(3);
+  const el=document.getElementById("start-lb-rows");
+  if(!scores.length){
+    el.innerHTML='<div style="font-size:13px;opacity:.5;padding:6px 0">No scores yet &mdash; be the first!</div>';
+    return;
+  }
+  el.innerHTML=scores.map((s,i)=>`<div class="lb-t-row">
+    <span>${["&#127945;","&#127946;","&#127947;"][i]} ${s.name}</span><strong>${s.score}</strong>
+  </div>`).join("");
+}
+
+async function renderLeaderboard(){
+  const el=document.getElementById("lb-list");
+  el.innerHTML='<div class="spinner"></div>';
+  const scores=await fetchTop(10);
+  if(!scores.length){
+    el.innerHTML='<p class="center body-sm" style="padding:14px 0">No scores yet &mdash; play first!</p>';
+    return;
+  }
+  const me=S.playerName.toLowerCase(); let found=false;
+  el.innerHTML=scores.map((s,i)=>{
+    const isYou=s.name.toLowerCase()===me; if(isYou)found=true;
+    const medal=["&#127945;","&#127946;","&#127947;"][i]||(i+1)+".";
+    return `<div class="lb-row${isYou?" lb-you":""}">
+      <span class="lb-rank">${medal}</span>
+      <span class="lb-name">${s.name}${isYou?" <strong>(You)</strong>":""}</span>
+      <span class="lb-score">${s.score}</span>
+    </div>`;
+  }).join("")+(!found&&S.score>0?`<div class="lb-row lb-you" style="margin-top:6px;border-top:1.5px dashed #ddd;padding-top:12px">
+    <span class="lb-rank">&mdash;</span><span class="lb-name">${S.playerName} <strong>(You)</strong></span>
+    <span class="lb-score">${S.score}</span></div>`:"");
+}
+
+function updateHUD(){
+  document.getElementById("score-val").textContent=S.score;
+  document.getElementById("timer-val").textContent=Math.max(0,S.timeLeft);
+  document.getElementById("hud-timer").classList.toggle("urgent",S.timeLeft<=8);
+  const pct=Math.min(100,(S.problems.length/S.MAX_PROBLEMS)*100);
+  const bar=document.getElementById("chaos-bar");
+  bar.style.width=pct+"%";
+  bar.style.background=pct>66?"var(--red)":pct>33?"var(--orange)":"var(--yellow)";
+  document.getElementById("hud-chaos-count").textContent=S.problems.length+"/"+S.MAX_PROBLEMS;
+  const overlay=document.getElementById("chaos-overlay");
+  if(pct>50){
+    const a=((pct-50)/50)*0.35;
+    overlay.style.background=`radial-gradient(ellipse at center,transparent 30%,rgba(229,57,53,${a}) 100%)`;
+    overlay.style.opacity="1"; if(pct>80)shake();
+  }else{overlay.style.opacity="0"}
+}
+
+let lastShake=0;
+function shake(){
+  const now=Date.now(); if(now-lastShake<1200)return; lastShake=now;
+  const a=document.getElementById("game-arena");
+  a.classList.remove("arena-shake"); void a.offsetWidth; a.classList.add("arena-shake");
+}
+
+function startGame(){
+  const v=document.getElementById("player-name-input").value.trim();
+  if(v)S.playerName=v;
+  S.score=0;S.timeLeft=S.WIN_TIME;S.elapsedSecs=0;
+  S.problems=[];S.problemCount=0;S.gameRunning=true;S.spawnDelay=1800;
+  document.getElementById("game-arena").innerHTML="";
+  document.getElementById("arena-hint").style.opacity=".4";
+  updateHUD(); showScreen("game");
+  setTimeout(()=>{if(S.gameRunning)document.getElementById("arena-hint").style.opacity="0"},3000);
+  scheduleSpawn();
+  S.tickTimer=setInterval(()=>{
+    if(!S.gameRunning)return;
+    S.timeLeft--;S.elapsedSecs++;updateHUD();
+    if(S.timeLeft<=0)triggerWin();
+  },1000);
+}
+
+function scheduleSpawn(){
+  S.spawnTimer=setTimeout(()=>{
+    if(!S.gameRunning)return;
+    if(S.problems.length<S.MAX_PROBLEMS+1)spawnProblem();
+    S.spawnDelay=Math.max(520,S.spawnDelay-S.elapsedSecs*18);
+    scheduleSpawn();
+  },S.spawnDelay);
+}
+
+function spawnProblem(){
+  const arena=document.getElementById("game-arena");
+  const W=arena.offsetWidth||window.innerWidth;
+  const H=arena.offsetHeight||window.innerHeight;
+  const type=TYPES[Math.floor(Math.random()*TYPES.length)];
+  const id="p"+(++S.problemCount);
+  const el=document.createElement("div");
+  el.className="problem-item "+type.cls; el.id=id;
+  const label=type.id==="chit"?COMPLAINTS[Math.floor(Math.random()*COMPLAINTS.length)]:type.label;
+  el.innerHTML=`<div class="bubble"><span class="icon">${type.icon}</span>${label?`<span>${label}</span>`:""}</div>`;
+  const iW=type.id==="chit"?118:98,iH=88,mx=12,my=90;
+  const x=mx+Math.random()*Math.max(0,W-iW-mx*2);
+  const y=my+Math.random()*Math.max(0,H-iH-my-60);
+  el.style.left=x+"px"; el.style.top=y+"px";
+  el.addEventListener("pointerdown",(e)=>{e.preventDefault();solveProblem(id,type.pts,el,x,y)});
+  arena.appendChild(el);
+  S.problems.push(id); updateHUD(); checkLose();
+}
+
+function solveProblem(id,pts,el,x,y){
+  if(!S.gameRunning||!document.getElementById(id))return;
+  S.problems=S.problems.filter(p=>p!==id);
+  const pop=document.createElement("div");
+  pop.className="score-pop"; pop.textContent="+"+pts;
+  pop.style.left=x+"px"; pop.style.top=y+"px";
+  document.getElementById("game-arena").appendChild(pop);
+  setTimeout(()=>pop.remove(),850);
+  el.style.transition="transform .18s ease-in,opacity .18s";
+  el.style.transform="scale(0) rotate(25deg)"; el.style.opacity="0";
+  setTimeout(()=>el.remove(),200);
+  S.score+=pts; updateHUD();
+  if(S.score>=S.WIN_SCORE)triggerWin();
+}
+
+function checkLose(){if(S.problems.length>S.MAX_PROBLEMS)triggerLose()}
+
+function stopGame(){S.gameRunning=false;clearTimeout(S.spawnTimer);clearInterval(S.tickTimer)}
+
+function triggerLose(){
+  if(!S.gameRunning)return; stopGame();
+  document.getElementById("lose-score").textContent=S.score;
+  showScreen("lose"); submitScore(S.playerName,S.score);
+}
+
+function triggerWin(){
+  if(!S.gameRunning)return; stopGame();
+  document.getElementById("win-score").textContent=S.score;
+  const secs=S.WIN_TIME-S.timeLeft;
+  document.getElementById("win-personal-line").textContent=
+    S.playerName+", you fixed the chaos in "+secs+"s. Now fix real ones.";
+  showScreen("win"); submitScore(S.playerName,S.score);
+}
+
+function shareScore(){
+  const url=window.location.href.split("?")[0];
+  const text="I scored "+S.score+" in Fix The Chaos — can you beat me?\n\n"+url;
+  if(navigator.share){navigator.share({title:"Fix The Chaos — ReShuffle",text}).catch(()=>{})}
+  else{navigator.clipboard.writeText(text).then(()=>alert("Copied! Share it")).catch(()=>alert(text))}
+}
+
+document.getElementById("btn-start").addEventListener("click",startGame);
+document.getElementById("btn-retry").addEventListener("click",()=>showScreen("start"));
+document.getElementById("btn-lb-from-lose").addEventListener("click",async()=>{showScreen("leaderboard");await renderLeaderboard()});
+document.getElementById("btn-confirm").addEventListener("click",()=>showScreen("confirm"));
+document.getElementById("btn-lb-from-win").addEventListener("click",async()=>{showScreen("leaderboard");await renderLeaderboard()});
+document.getElementById("btn-share").addEventListener("click",shareScore);
+document.getElementById("btn-play-again-lb").addEventListener("click",()=>showScreen("start"));
+document.getElementById("btn-back-from-lb").addEventListener("click",()=>showScreen("start"));
+document.getElementById("btn-back-confirm").addEventListener("click",()=>showScreen("win"));
+
+function init(){loadTeaser()}
+if(window._firebaseReady){init()}
+else{window.addEventListener("firebaseReady",init,{once:true});setTimeout(init,3000)}
+</script>
+</body>
+</html>
